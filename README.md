@@ -1,39 +1,83 @@
 # Lists Proxy
 
-Curated domain and subnet lists for services that are often blocked, throttled, or restricted.
+## RU
 
-## Structure
+Набор списков доменов и подсетей (`.srs`) для прокси и маршрутизации сервисов.
 
-Each service has its own directory:
+### Формат
 
-- `domains.srs` - domains for SNI/domain-based routing rules
-- `subnets.srs` - IPv4/IPv6 CIDR ranges for IP-based rules
+Каждая папка содержит:
 
-Example:
+- `domains.srs` - список доменов
+- `subnets.srs` - список IPv4/IPv6 CIDR
+- `services.txt` - только для групповых папок (из каких сервисов собран список)
 
-```text
-service_name/
-  domains.srs
-  subnets.srs
+### Одиночные сервисы
+
+Примеры: `telegram`, `facebook`, `whatsapp`, `tiktok`, `chatgpt`, `claude`, `youtube` и т.д.
+
+### Готовые групповые списки и состав
+
+- `group_ai_all`
+  - входит: `chatgpt`, `claude`, `cursor`, `gemini`, `perplexity`, `midjourney`, `microsoft_copilot`
+- `group_social_networks`
+  - входит: `facebook`, `instagram`, `x_twitter`, `linkedin`, `tiktok`, `snapchat`
+- `group_messengers_calls`
+  - входит: `telegram`, `whatsapp`, `signal`, `viber`, `discord`, `protonmail`, `facetime`
+- `group_social_messaging`
+  - входит: `telegram`, `whatsapp`, `facebook`, `instagram`, `x_twitter`, `linkedin`, `tiktok`, `snapchat`, `discord`, `signal`, `viber`
+- `group_video_audio_streaming`
+  - входит: `youtube`, `twitch`, `spotify`, `dailymotion`, `soundcloud`
+- `group_news_media`
+  - входит: `bbc`, `cnn`, `associated_press`, `wsj`, `radio_svoboda`, `euronews`, `meduza`, `dw`, `google_news`
+- `group_creator_platforms`
+  - входит: `patreon`, `envato`, `canva`, `metacritic`, `soundcloud`
+- `group_gaming`
+  - входит: `roblox`, `metacritic`
+
+### Пересборка групп
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build-group-lists.ps1
 ```
 
-## Categories in this repo
+## EN
 
-- AI tools: `chatgpt`, `claude`, `cursor`, `gemini`, `perplexity`, `midjourney`, `microsoft_copilot`, plus aggregate folder `ai_services`
-- Social networks: `facebook`, `instagram`, `x_twitter`, `linkedin`, `tiktok`, `snapchat`
-- Messengers and calls: `telegram`, `whatsapp`, `signal`, `viber`, `discord`, `protonmail`, `facetime`
-- Video and streaming: `youtube`, `twitch`, `spotify`, `dailymotion`
-- Media and news: `bbc`, `cnn`, `associated_press`, `wsj`, `radio_svoboda`, `euronews`, `meduza`, `dw`, `google_news`
-- Creator/content services: `patreon`, `soundcloud`, `envato`, `metacritic`, `roblox`, `canva`
+Domain and subnet (`.srs`) lists for proxy/routing setups.
 
-## Notes
+### Format
 
-- Lists are intended as practical routing/proxy datasets and can be expanded over time.
-- Some services use CDNs and cloud providers; subnet lists may include shared infrastructure ranges.
-- Verify and tune lists for your own policy and region.
+Each directory contains:
 
-## Quick update workflow
+- `domains.srs` - domains list
+- `subnets.srs` - IPv4/IPv6 CIDR list
+- `services.txt` - group folders only (source services used to build the group)
 
-1. Edit `domains.srs` and `subnets.srs` inside a service folder.
-2. Add missing service folders using the same structure.
-3. Optionally merge common entries into `general/`.
+### Single-service folders
+
+Examples: `telegram`, `facebook`, `whatsapp`, `tiktok`, `chatgpt`, `claude`, `youtube`, etc.
+
+### Ready-to-use grouped lists and membership
+
+- `group_ai_all`
+  - includes: `chatgpt`, `claude`, `cursor`, `gemini`, `perplexity`, `midjourney`, `microsoft_copilot`
+- `group_social_networks`
+  - includes: `facebook`, `instagram`, `x_twitter`, `linkedin`, `tiktok`, `snapchat`
+- `group_messengers_calls`
+  - includes: `telegram`, `whatsapp`, `signal`, `viber`, `discord`, `protonmail`, `facetime`
+- `group_social_messaging`
+  - includes: `telegram`, `whatsapp`, `facebook`, `instagram`, `x_twitter`, `linkedin`, `tiktok`, `snapchat`, `discord`, `signal`, `viber`
+- `group_video_audio_streaming`
+  - includes: `youtube`, `twitch`, `spotify`, `dailymotion`, `soundcloud`
+- `group_news_media`
+  - includes: `bbc`, `cnn`, `associated_press`, `wsj`, `radio_svoboda`, `euronews`, `meduza`, `dw`, `google_news`
+- `group_creator_platforms`
+  - includes: `patreon`, `envato`, `canva`, `metacritic`, `soundcloud`
+- `group_gaming`
+  - includes: `roblox`, `metacritic`
+
+### Rebuild grouped lists
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build-group-lists.ps1
+```

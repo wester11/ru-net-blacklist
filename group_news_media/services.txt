@@ -1,0 +1,9 @@
+associated_press
+bbc
+cnn
+dw
+euronews
+google_news
+meduza
+radio_svoboda
+wsj

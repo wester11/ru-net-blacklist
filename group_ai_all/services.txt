@@ -1,0 +1,7 @@
+chatgpt
+claude
+cursor
+gemini
+microsoft_copilot
+midjourney
+perplexity
