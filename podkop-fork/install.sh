@@ -15,18 +15,86 @@ set -eu
 PODKOP_FORK_REPO="itdoginfo/podkop"
 # Your lists repository:
 LISTS_BASE_URL="https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/lists"
+SERVICES_BASE_URL="https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/services"
 # Podkop default config source:
 PODKOP_CONFIG_URL="https://raw.githubusercontent.com/itdoginfo/podkop/main/podkop/files/etc/config/podkop"
 
 REPO_API="https://api.github.com/repos/${PODKOP_FORK_REPO}/releases/latest"
 DOWNLOAD_DIR="/tmp/podkop-fork"
 COUNT=3
+PODKOP_KEY="${PODKOP_KEY:-}"
 
 PKG_IS_APK=0
 command -v apk >/dev/null 2>&1 && PKG_IS_APK=1
 
 msg() {
     printf "\033[32;1m%s\033[0m\n" "$1"
+}
+
+decode_key_payload() {
+    encoded="$1"
+    encoded="${encoded#PK1_}"
+    encoded="$(echo "$encoded" | tr '_-' '/+')"
+    rem=$(( ${#encoded} % 4 ))
+    if [ "$rem" -eq 2 ]; then encoded="${encoded}=="; fi
+    if [ "$rem" -eq 3 ]; then encoded="${encoded}="; fi
+
+    decoded="$(echo "$encoded" | base64 -d 2>/dev/null || true)"
+    if [ -z "$decoded" ] && command -v openssl >/dev/null 2>&1; then
+        decoded="$(echo "$encoded" | openssl base64 -d -A 2>/dev/null || true)"
+    fi
+    echo "$decoded"
+}
+
+add_remote_pair() {
+    domain_url="$1"
+    subnet_url="$2"
+    uci -q add_list podkop.main.remote_domain_lists="$domain_url"
+    uci -q add_list podkop.main.remote_subnet_lists="$subnet_url"
+}
+
+apply_default_lists() {
+    add_remote_pair "${LISTS_BASE_URL}/all_services/domains.srs" "${LISTS_BASE_URL}/all_services/subnets.srs"
+    add_remote_pair "${LISTS_BASE_URL}/social_messaging/domains.srs" "${LISTS_BASE_URL}/social_messaging/subnets.srs"
+    add_remote_pair "${LISTS_BASE_URL}/ai_all/domains.srs" "${LISTS_BASE_URL}/ai_all/subnets.srs"
+}
+
+apply_selected_lists_from_key() {
+    payload="$(decode_key_payload "$PODKOP_KEY")"
+    if [ -z "$payload" ]; then
+        warn "Key decode failed, fallback to default lists."
+        apply_default_lists
+        return
+    fi
+
+    lists_csv="$(echo "$payload" | sed -n 's/.*L=\([^;]*\).*/\1/p')"
+    services_csv="$(echo "$payload" | sed -n 's/.*S=\([^;]*\).*/\1/p')"
+    selected_count=0
+
+    OLD_IFS="$IFS"
+    IFS=','
+    for item in $lists_csv; do
+        [ -n "$item" ] || continue
+        if echo "$item" | grep -Eq '^[a-z0-9_]+$'; then
+            add_remote_pair "${LISTS_BASE_URL}/${item}/domains.srs" "${LISTS_BASE_URL}/${item}/subnets.srs"
+            selected_count=$((selected_count + 1))
+        fi
+    done
+    for item in $services_csv; do
+        [ -n "$item" ] || continue
+        if echo "$item" | grep -Eq '^[a-z0-9_]+$'; then
+            add_remote_pair "${SERVICES_BASE_URL}/${item}/domains.srs" "${SERVICES_BASE_URL}/${item}/subnets.srs"
+            selected_count=$((selected_count + 1))
+        fi
+    done
+    IFS="$OLD_IFS"
+
+    if [ "$selected_count" -eq 0 ]; then
+        warn "No valid items in key, fallback to default lists."
+        apply_default_lists
+    else
+        msg "Applied selected items from key: $selected_count"
+    fi
 }
 
 warn() {
@@ -266,15 +334,11 @@ apply_custom_lists() {
     uci -q delete podkop.main.remote_domain_lists || true
     uci -q delete podkop.main.remote_subnet_lists || true
 
-    # Main combined list (all services)
-    uci -q add_list podkop.main.remote_domain_lists="${LISTS_BASE_URL}/all_services/domains.srs"
-    uci -q add_list podkop.main.remote_subnet_lists="${LISTS_BASE_URL}/all_services/subnets.srs"
-
-    # Extra focused lists
-    uci -q add_list podkop.main.remote_domain_lists="${LISTS_BASE_URL}/social_messaging/domains.srs"
-    uci -q add_list podkop.main.remote_subnet_lists="${LISTS_BASE_URL}/social_messaging/subnets.srs"
-    uci -q add_list podkop.main.remote_domain_lists="${LISTS_BASE_URL}/ai_all/domains.srs"
-    uci -q add_list podkop.main.remote_subnet_lists="${LISTS_BASE_URL}/ai_all/subnets.srs"
+    if [ -n "$PODKOP_KEY" ]; then
+        apply_selected_lists_from_key
+    else
+        apply_default_lists
+    fi
 
     uci commit podkop
     msg "Custom remote lists applied to podkop.main"
@@ -293,6 +357,16 @@ print_finish() {
 }
 
 main() {
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
+            --key)
+                shift
+                PODKOP_KEY="${1:-}"
+                ;;
+        esac
+        shift || true
+    done
+
     check_system
     sing_box
     prepare_ntp

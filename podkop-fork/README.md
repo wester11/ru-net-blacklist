@@ -1,32 +1,33 @@
-# Podkop + ваши списки
+# Podkop Installer (с ключом выбора)
 
-`install.sh` ставит Podkop и сразу подключает списки из:
+Скрипт `install.sh`:
 
-`https://github.com/wester11/ru-net-blacklist`
+- ставит Podkop (`itdoginfo/podkop`),
+- подключает ваши списки из `https://github.com/wester11/ru-net-blacklist`,
+- умеет принимать ключ выбора сервисов/списков (`PODKOP_KEY` или `--key`),
+- выводит благодарность автору Podkop.
 
-## Что уже настроено в скрипте
-
-- Podkop пакеты: `itdoginfo/podkop` (оригинальный репозиторий)
-- Списки: `https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/lists`
-- Конфиг Podkop: `https://raw.githubusercontent.com/itdoginfo/podkop/main/podkop/files/etc/config/podkop`
-
-## Команда установки на роутере
+## Установка без ключа
 
 ```sh
 sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/podkop-fork/install.sh)
 ```
 
-## Что скрипт добавляет в Podkop
-
-В `podkop.main` автоматически добавляются remote-списки:
-
+По умолчанию подключатся:
 - `lists/all_services`
 - `lists/social_messaging`
 - `lists/ai_all`
 
-## Благодарность
+## Установка с ключом
 
-Скрипт выводит:
+```sh
+PODKOP_KEY='ВАШ_КЛЮЧ' sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/podkop-fork/install.sh)
+```
 
-- `Thanks to the original Podkop author and project: https://github.com/itdoginfo/podkop`
-- `Спасибо создателю Podkop: https://github.com/itdoginfo/podkop`
+или:
+
+```sh
+sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/podkop-fork/install.sh) --key 'ВАШ_КЛЮЧ'
+```
+
+Ключ можно сгенерировать в `selector/index.html`.
