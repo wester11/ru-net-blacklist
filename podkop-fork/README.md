@@ -14,6 +14,8 @@ sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/
 sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/install.sh)
 ```
 
+После установки обновите страницу LuCI с очисткой кэша браузера (Ctrl+F5).
+
 ## Что включено
 
 - Стандартные community-списки Podkop

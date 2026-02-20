@@ -134,9 +134,9 @@ pkg_list_update() {
 pkg_install() {
     pkg_file="$1"
     if [ "$PKG_IS_APK" -eq 1 ]; then
-        apk add --allow-untrusted "$pkg_file"
+        apk add --allow-untrusted --force-overwrite "$pkg_file"
     else
-        opkg install "$pkg_file"
+        opkg install --force-reinstall "$pkg_file"
     fi
 }
 
@@ -292,6 +292,8 @@ install_packages() {
         done
         [ -n "$file" ] || continue
         msg "Installing $(basename "$file")..."
+        # Make sure old package is replaced with the custom one.
+        pkg_remove "$pkg" || true
         pkg_install "$file"
         sleep 2
     done
@@ -307,6 +309,20 @@ install_packages() {
         pkg_remove luci-i18n-podkop-ru || true
         pkg_install "$ru_file" || true
     fi
+}
+
+refresh_luci_cache() {
+    msg "Refreshing LuCI cache..."
+    rm -f /tmp/luci-indexcache* || true
+    rm -rf /tmp/luci-modulecache || true
+    rm -rf /tmp/luci-* || true
+
+    if command -v luci-reload >/dev/null 2>&1; then
+        luci-reload || true
+    fi
+
+    /etc/init.d/rpcd restart || true
+    /etc/init.d/uhttpd restart || true
 }
 
 reset_old_config_if_needed() {
@@ -373,6 +389,7 @@ main() {
     pkg_list_update || { err "Package list update failed"; exit 1; }
     download_release_packages
     install_packages
+    refresh_luci_cache
     reset_old_config_if_needed
     apply_custom_lists
     cleanup
