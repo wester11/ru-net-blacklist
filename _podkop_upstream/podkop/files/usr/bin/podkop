@@ -995,7 +995,10 @@ configure_community_list_handler() {
     case "$tag" in
     "ai_all" | "gaming" | "social_networks" | "messengers_calls" | "video_audio_streaming" | \
         "news_media" | "developer_platforms" | "cloud_storage")
-        url="$COMMUNITY_DOMAINS_BASE_URL/$tag/domains.srs"
+        # Custom community lists are currently applied via subnet lists.
+        # Domain lists in this repository are plain text and not binary .srs rule-sets.
+        log "Skip sing-box binary community ruleset for custom tag '$tag' (subnet list will be used)"
+        return 0
         ;;
     *)
         url="$SRS_MAIN_URL/$tag.srs"

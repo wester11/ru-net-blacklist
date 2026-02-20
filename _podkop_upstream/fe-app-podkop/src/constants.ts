@@ -56,14 +56,14 @@ export const DOMAIN_LIST_OPTIONS = {
   ovh: 'OVH ASN',
   digitalocean: 'DigitalOcean ASN',
   cloudfront: 'CloudFront ASN',
-  ai_all: 'AI инструменты (наш список)',
-  gaming: 'Игры (наш список)',
-  social_networks: 'Социальные сети (наш список)',
-  messengers_calls: 'Мессенджеры и звонки (наш список)',
-  video_audio_streaming: 'Видео и стриминг (наш список)',
-  news_media: 'Новости и медиа (наш список)',
-  developer_platforms: 'Платформы для разработчиков (наш список)',
-  cloud_storage: 'Облачные хранилища (наш список)',
+  ai_all: 'AI инструменты',
+  gaming: 'Игры',
+  social_networks: 'Социальные сети',
+  messengers_calls: 'Мессенджеры и звонки',
+  video_audio_streaming: 'Видео и стриминг',
+  news_media: 'Новости и медиа',
+  developer_platforms: 'Платформы для разработчиков',
+  cloud_storage: 'Облачные хранилища',
 };
 
 export const UPDATE_INTERVAL_OPTIONS = {
