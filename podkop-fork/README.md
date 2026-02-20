@@ -1,33 +1,36 @@
-# Podkop Installer (с ключом выбора)
+# Кастомный Podkop (релизы этого репозитория)
 
-Скрипт `install.sh`:
+`install.sh` устанавливает Podkop-пакеты из релизов `wester11/ru-net-blacklist`.
 
-- ставит Podkop (`itdoginfo/podkop`),
-- подключает ваши списки из `https://github.com/wester11/ru-net-blacklist`,
-- умеет принимать ключ выбора сервисов/списков (`PODKOP_KEY` или `--key`),
-- выводит благодарность автору Podkop.
-
-## Установка без ключа
+## Установка одной командой
 
 ```sh
 sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/podkop-fork/install.sh)
 ```
 
-По умолчанию подключатся:
-- `lists/all_services`
-- `lists/social_messaging`
-- `lists/ai_all`
-
-## Установка с ключом
+Также доступен короткий wrapper:
 
 ```sh
-PODKOP_KEY='ВАШ_КЛЮЧ' sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/podkop-fork/install.sh)
+sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/install.sh)
 ```
 
-или:
+## Что включено
 
-```sh
-sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/podkop-fork/install.sh) --key 'ВАШ_КЛЮЧ'
-```
+- Стандартные community-списки Podkop
+- Ваши секции из `lists/`:
+  - `ai_all`
+  - `gaming`
+  - `social_networks`
+  - `messengers_calls`
+  - `video_audio_streaming`
+  - `news_media`
+  - `developer_platforms`
+  - `cloud_storage`
 
-Ключ можно сгенерировать в `selector/index.html`.
+## Как выпускать новую версию пакетов
+
+1. Обновите код в `main`.
+2. Создайте tag формата `podkop-vX.Y.Z` (например, `podkop-v0.7.1-ru1`).
+3. Запушьте tag в GitHub.
+
+Workflow `.github/workflows/release-custom-podkop.yml` соберет `ipk/apk` и создаст релиз автоматически.

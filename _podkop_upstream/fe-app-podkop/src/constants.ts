@@ -8,19 +8,62 @@ export const PODKOP_LUCI_APP_VERSION = '__COMPILED_VERSION_VARIABLE__';
 export const FAKEIP_CHECK_DOMAIN = 'fakeip.podkop.fyi';
 export const IP_CHECK_DOMAIN = 'ip.podkop.fyi';
 
-export const REGIONAL_OPTIONS: string[] = [];
+export const REGIONAL_OPTIONS = [
+  'russia_inside',
+  'russia_outside',
+  'ukraine_inside',
+];
 
-export const ALLOWED_WITH_RUSSIA_INSIDE: string[] = [];
+export const ALLOWED_WITH_RUSSIA_INSIDE = [
+  'russia_inside',
+  'meta',
+  'twitter',
+  'discord',
+  'telegram',
+  'cloudflare',
+  'google_ai',
+  'google_play',
+  'hetzner',
+  'ovh',
+  'hodca',
+  'roblox',
+  'digitalocean',
+  'cloudfront',
+];
 
 export const DOMAIN_LIST_OPTIONS = {
-  ai_all: 'AI инструменты',
-  gaming: 'Игры',
-  social_networks: 'Социальные сети',
-  messengers_calls: 'Мессенджеры и звонки',
-  video_audio_streaming: 'Видео и стриминг',
-  news_media: 'Новости и медиа',
-  developer_platforms: 'Платформы для разработчиков',
-  cloud_storage: 'Облачные хранилища',
+  russia_inside: 'Россия (внутри)',
+  russia_outside: 'Россия (снаружи)',
+  ukraine_inside: 'Украина',
+  geoblock: 'Геоблок',
+  block: 'Блок-лист',
+  porn: '18+',
+  news: 'Новости (база)',
+  anime: 'Аниме',
+  youtube: 'YouTube',
+  discord: 'Discord',
+  meta: 'Meta (Facebook/Instagram)',
+  twitter: 'Twitter (X)',
+  hdrezka: 'HDRezka',
+  tiktok: 'TikTok',
+  telegram: 'Telegram',
+  cloudflare: 'Cloudflare',
+  google_ai: 'Google AI',
+  google_play: 'Google Play',
+  hodca: 'H.O.D.C.A',
+  roblox: 'Roblox',
+  hetzner: 'Hetzner ASN',
+  ovh: 'OVH ASN',
+  digitalocean: 'DigitalOcean ASN',
+  cloudfront: 'CloudFront ASN',
+  ai_all: 'AI инструменты (наш список)',
+  gaming: 'Игры (наш список)',
+  social_networks: 'Социальные сети (наш список)',
+  messengers_calls: 'Мессенджеры и звонки (наш список)',
+  video_audio_streaming: 'Видео и стриминг (наш список)',
+  news_media: 'Новости и медиа (наш список)',
+  developer_platforms: 'Платформы для разработчиков (наш список)',
+  cloud_storage: 'Облачные хранилища (наш список)',
 };
 
 export const UPDATE_INTERVAL_OPTIONS = {

@@ -867,17 +867,60 @@ var STATUS_COLORS = {
 var PODKOP_LUCI_APP_VERSION = "__COMPILED_VERSION_VARIABLE__";
 var FAKEIP_CHECK_DOMAIN = "fakeip.podkop.fyi";
 var IP_CHECK_DOMAIN = "ip.podkop.fyi";
-var REGIONAL_OPTIONS = [];
-var ALLOWED_WITH_RUSSIA_INSIDE = [];
+var REGIONAL_OPTIONS = [
+  "russia_inside",
+  "russia_outside",
+  "ukraine_inside"
+];
+var ALLOWED_WITH_RUSSIA_INSIDE = [
+  "russia_inside",
+  "meta",
+  "twitter",
+  "discord",
+  "telegram",
+  "cloudflare",
+  "google_ai",
+  "google_play",
+  "hetzner",
+  "ovh",
+  "hodca",
+  "roblox",
+  "digitalocean",
+  "cloudfront"
+];
 var DOMAIN_LIST_OPTIONS = {
-  ai_all: "\u0410I \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b",
-  gaming: "\u0418\u0433\u0440\u044b",
-  social_networks: "\u0421\u043e\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u0435\u0442\u0438",
-  messengers_calls: "\u041c\u0435\u0441\u0441\u0435\u043d\u0434\u0436\u0435\u0440\u044b \u0438 \u0437\u0432\u043e\u043d\u043a\u0438",
-  video_audio_streaming: "\u0412\u0438\u0434\u0435\u043e \u0438 \u0441\u0442\u0440\u0438\u043c\u0438\u043d\u0433",
-  news_media: "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u0438 \u043c\u0435\u0434\u0438\u0430",
-  developer_platforms: "\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b \u0434\u043b\u044f \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a\u043e\u0432",
-  cloud_storage: "\u041e\u0431\u043b\u0430\u0447\u043d\u044b\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0430"
+  russia_inside: "\u0420\u043e\u0441\u0441\u0438\u044f (\u0432\u043d\u0443\u0442\u0440\u0438)",
+  russia_outside: "\u0420\u043e\u0441\u0441\u0438\u044f (\u0441\u043d\u0430\u0440\u0443\u0436\u0438)",
+  ukraine_inside: "\u0423\u043a\u0440\u0430\u0438\u043d\u0430",
+  geoblock: "\u0413\u0435\u043e\u0431\u043b\u043e\u043a",
+  block: "\u0411\u043b\u043e\u043a-\u043b\u0438\u0441\u0442",
+  porn: "18+",
+  news: "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 (\u0431\u0430\u0437\u0430)",
+  anime: "\u0410\u043d\u0438\u043c\u0435",
+  youtube: "YouTube",
+  discord: "Discord",
+  meta: "Meta (Facebook/Instagram)",
+  twitter: "Twitter (X)",
+  hdrezka: "HDRezka",
+  tiktok: "TikTok",
+  telegram: "Telegram",
+  cloudflare: "Cloudflare",
+  google_ai: "Google AI",
+  google_play: "Google Play",
+  hodca: "H.O.D.C.A",
+  roblox: "Roblox",
+  hetzner: "Hetzner ASN",
+  ovh: "OVH ASN",
+  digitalocean: "DigitalOcean ASN",
+  cloudfront: "CloudFront ASN",
+  ai_all: "AI \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b (\u043d\u0430\u0448 \u0441\u043f\u0438\u0441\u043e\u043a)",
+  gaming: "\u0418\u0433\u0440\u044b (\u043d\u0430\u0448 \u0441\u043f\u0438\u0441\u043e\u043a)",
+  social_networks: "\u0421\u043e\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u0435\u0442\u0438 (\u043d\u0430\u0448 \u0441\u043f\u0438\u0441\u043e\u043a)",
+  messengers_calls: "\u041c\u0435\u0441\u0441\u0435\u043d\u0434\u0436\u0435\u0440\u044b \u0438 \u0437\u0432\u043e\u043d\u043a\u0438 (\u043d\u0430\u0448 \u0441\u043f\u0438\u0441\u043e\u043a)",
+  video_audio_streaming: "\u0412\u0438\u0434\u0435\u043e \u0438 \u0441\u0442\u0440\u0438\u043c\u0438\u043d\u0433 (\u043d\u0430\u0448 \u0441\u043f\u0438\u0441\u043e\u043a)",
+  news_media: "\u041d\u043e\u0432\u043e\u0441\u0442\u0438 \u0438 \u043c\u0435\u0434\u0438\u0430 (\u043d\u0430\u0448 \u0441\u043f\u0438\u0441\u043e\u043a)",
+  developer_platforms: "\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b \u0434\u043b\u044f \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u0447\u0438\u043a\u043e\u0432 (\u043d\u0430\u0448 \u0441\u043f\u0438\u0441\u043e\u043a)",
+  cloud_storage: "\u041e\u0431\u043b\u0430\u0447\u043d\u044b\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0430 (\u043d\u0430\u0448 \u0441\u043f\u0438\u0441\u043e\u043a)"
 };
 var UPDATE_INTERVAL_OPTIONS = {
   "1h": "Every hour",

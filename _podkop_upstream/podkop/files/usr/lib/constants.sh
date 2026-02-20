@@ -51,7 +51,20 @@ SB_EXCLUSION_RULE_TAG="exclusion-rule-tag"
 SB_CLASH_API_CONTROLLER_PORT=9090
 
 ## Lists
+GITHUB_RAW_URL="https://raw.githubusercontent.com/itdoginfo/allow-domains/main"
+SRS_MAIN_URL="https://github.com/itdoginfo/allow-domains/releases/latest/download"
+SUBNETS_TWITTER="${GITHUB_RAW_URL}/Subnets/IPv4/twitter.lst"
+SUBNETS_META="${GITHUB_RAW_URL}/Subnets/IPv4/meta.lst"
+SUBNETS_DISCORD="${GITHUB_RAW_URL}/Subnets/IPv4/discord.lst"
+SUBNETS_ROBLOX="${GITHUB_RAW_URL}/Subnets/IPv4/roblox.lst"
+SUBNETS_TELERAM="${GITHUB_RAW_URL}/Subnets/IPv4/telegram.lst"
+SUBNETS_CLOUDFLARE="${GITHUB_RAW_URL}/Subnets/IPv4/cloudflare.lst"
+SUBNETS_HETZNER="${GITHUB_RAW_URL}/Subnets/IPv4/hetzner.lst"
+SUBNETS_OVH="${GITHUB_RAW_URL}/Subnets/IPv4/ovh.lst"
+SUBNETS_DIGITALOCEAN="${GITHUB_RAW_URL}/Subnets/IPv4/digitalocean.lst"
+SUBNETS_CLOUDFRONT="${GITHUB_RAW_URL}/Subnets/IPv4/cloudfront.lst"
+
 LISTS_BASE_URL="https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/lists"
 COMMUNITY_DOMAINS_BASE_URL="$LISTS_BASE_URL"
 COMMUNITY_SUBNETS_BASE_URL="$LISTS_BASE_URL"
-COMMUNITY_SERVICES="ai_all gaming social_networks messengers_calls video_audio_streaming news_media developer_platforms cloud_storage"
+COMMUNITY_SERVICES="russia_inside russia_outside ukraine_inside geoblock block porn news anime youtube hdrezka tiktok google_ai google_play hodca discord meta twitter cloudflare cloudfront digitalocean hetzner ovh telegram roblox ai_all gaming social_networks messengers_calls video_audio_streaming news_media developer_platforms cloud_storage"

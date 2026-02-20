@@ -11,13 +11,13 @@ set -eu
 # 3) Keep attribution to original podkop author
 
 # ---- Ready-to-use values ----
-# Podkop packages source (can be your fork later, default is original podkop repo)
-PODKOP_FORK_REPO="itdoginfo/podkop"
+# Podkop packages source (this repository releases)
+PODKOP_FORK_REPO="wester11/ru-net-blacklist"
 # Your lists repository:
 LISTS_BASE_URL="https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/lists"
 SERVICES_BASE_URL="https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/services"
-# Podkop default config source:
-PODKOP_CONFIG_URL="https://raw.githubusercontent.com/itdoginfo/podkop/main/podkop/files/etc/config/podkop"
+# Podkop custom config source (from custom podkop fork sources in this repository):
+PODKOP_CONFIG_URL="https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/_podkop_upstream/podkop/files/etc/config/podkop"
 
 REPO_API="https://api.github.com/repos/${PODKOP_FORK_REPO}/releases/latest"
 DOWNLOAD_DIR="/tmp/podkop-fork"

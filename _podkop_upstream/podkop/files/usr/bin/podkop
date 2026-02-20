@@ -992,7 +992,15 @@ configure_community_list_handler() {
     local ruleset_tag format url update_interval detour
     ruleset_tag="$(get_ruleset_tag "$section" "$tag" "community")"
     format="binary"
-    url="$COMMUNITY_DOMAINS_BASE_URL/$tag/domains.srs"
+    case "$tag" in
+    "ai_all" | "gaming" | "social_networks" | "messengers_calls" | "video_audio_streaming" | \
+        "news_media" | "developer_platforms" | "cloud_storage")
+        url="$COMMUNITY_DOMAINS_BASE_URL/$tag/domains.srs"
+        ;;
+    *)
+        url="$SRS_MAIN_URL/$tag.srs"
+        ;;
+    esac
     detour="$(get_download_detour_tag)"
     config_get update_interval "settings" "update_interval" "1d"
 
@@ -1280,7 +1288,45 @@ import_community_subnet_lists() {
 
 import_community_service_subnet_list_handler() {
     local service="$1"
-    local URL="${COMMUNITY_SUBNETS_BASE_URL}/${service}/subnets.srs"
+    local URL
+
+    case "$service" in
+    "twitter")
+        URL=$SUBNETS_TWITTER
+        ;;
+    "meta")
+        URL=$SUBNETS_META
+        ;;
+    "telegram")
+        URL=$SUBNETS_TELERAM
+        ;;
+    "cloudflare")
+        URL=$SUBNETS_CLOUDFLARE
+        ;;
+    "hetzner")
+        URL=$SUBNETS_HETZNER
+        ;;
+    "ovh")
+        URL=$SUBNETS_OVH
+        ;;
+    "digitalocean")
+        URL=$SUBNETS_DIGITALOCEAN
+        ;;
+    "cloudfront")
+        URL=$SUBNETS_CLOUDFRONT
+        ;;
+    "discord")
+        URL=$SUBNETS_DISCORD
+        ;;
+    "roblox")
+        URL=$SUBNETS_ROBLOX
+        ;;
+    "ai_all" | "gaming" | "social_networks" | "messengers_calls" | "video_audio_streaming" | \
+        "news_media" | "developer_platforms" | "cloud_storage")
+        URL="${COMMUNITY_SUBNETS_BASE_URL}/${service}/subnets.srs"
+        ;;
+    *) return 0 ;;
+    esac
 
     local tmpfile http_proxy_address
     tmpfile=$(mktemp)
@@ -1293,7 +1339,14 @@ import_community_service_subnet_list_handler() {
         return 1
     fi
 
-    nft_add_set_elements_from_file_chunked "$tmpfile" "$NFT_TABLE_NAME" "$NFT_COMMON_SET_NAME"
+    if [ "$service" = "discord" ]; then
+        nft_create_ipv4_set "$NFT_TABLE_NAME" "$NFT_DISCORD_SET_NAME"
+        nft add rule inet "$NFT_TABLE_NAME" mangle iifname "@$NFT_INTERFACE_SET_NAME" ip daddr \
+            "@$NFT_DISCORD_SET_NAME" udp dport '{ 50000-65535 }' meta mark set "$NFT_FAKEIP_MARK" counter
+        nft_add_set_elements_from_file_chunked "$tmpfile" "$NFT_TABLE_NAME" "$NFT_DISCORD_SET_NAME"
+    else
+        nft_add_set_elements_from_file_chunked "$tmpfile" "$NFT_TABLE_NAME" "$NFT_COMMON_SET_NAME"
+    fi
 
     rm -f "$tmpfile"
 }

@@ -1,76 +1,63 @@
 # RU Net Blacklist
 
-Готовые списки доменов и подсетей для Podkop/OpenWrt с удобным выбором нужных сервисов.
+Списки доменов/подсетей и кастомный Podkop для OpenWrt.
 
-## Что внутри
+## Что это
 
-- `services/` — отдельные сервисы (`domains.srs`, `subnets.srs`)
-- `lists/` — агрегированные секции (AI, Игры, Соцсети и т.д.)
-- `selector/` — мини-сайт для генерации ключа выбора
-- `podkop-fork/` — установщик Podkop с поддержкой ключа (`PODKOP_KEY`)
-- `scripts/` — утилиты обновления списков
-- `docs/` — отчеты по базе
-- `wiki/` — документация по кастомному Podkop
+Проект дает:
 
-## Быстрый старт
+- базу сервисов `services/`
+- готовые секции `lists/`
+- кастомный Podkop с community-списками:
+  - стандартные списки Podkop
+  - ваши секции из `lists/`
+- установку на роутер одной командой
 
-Установка Podkop с дефолтными секциями:
+## Установка одной командой
+
+```sh
+sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/install.sh)
+```
+
+или напрямую:
 
 ```sh
 sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/podkop-fork/install.sh)
 ```
 
-По умолчанию подключаются:
-- `all_services`
-- `social_messaging`
-- `ai_all`
+## Community-секции (наши)
 
-## Выбор только нужных списков
+- `ai_all` — AI инструменты
+- `gaming` — Игры
+- `social_networks` — Социальные сети
+- `messengers_calls` — Мессенджеры и звонки
+- `video_audio_streaming` — Видео и стриминг
+- `news_media` — Новости и медиа
+- `developer_platforms` — Платформы для разработчиков
+- `cloud_storage` — Облачные хранилища
 
-1. Откройте `selector/index.html` (или разместите `selector/` на GitHub Pages).
-2. Отметьте нужные `lists` и/или `services`.
-3. Сгенерируйте ключ.
-4. Установите с ключом:
+## Как выпускается наш Podkop
 
-```sh
-PODKOP_KEY='ВАШ_КЛЮЧ' sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/podkop-fork/install.sh)
-```
+При push тега `podkop-v*` запускается GitHub Actions:
 
-или:
+- `.github/workflows/release-custom-podkop.yml`
 
-```sh
-sh <(wget -O - https://raw.githubusercontent.com/wester11/ru-net-blacklist/main/podkop-fork/install.sh) --key 'ВАШ_КЛЮЧ'
-```
+Он:
 
-## Основные секции в `lists/`
+1. Собирает `podkop` и `luci-app-podkop` (`ipk` и `apk`) из `_podkop_upstream/`
+2. Публикует артефакты в GitHub Release
 
-- `ai_all` — AI-инструменты
-- `gaming` — игры
-- `social_networks` — социальные сети
-- `messengers_calls` — мессенджеры и звонки
-- `video_audio_streaming` — видео/аудио и стриминг
-- `news_media` — новостные и медиа-ресурсы
-- `developer_platforms` — сервисы для разработчиков
-- `cloud_storage` — облачные хранилища
+## Где что лежит
 
-## Обновление базы списков
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\add-more-services.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\build-group-lists.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\generate-catalog.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\analyze-database.ps1
-```
-
-## Кастомный Podkop (community-списки в UI)
-
-Подготовлен вариант форка, где ваши секции видны прямо в `Списки сообщества`, без ручного ввода внешних URL:
-
-- исходники и изменения: `_podkop_upstream/`
-- документация: `wiki/README.md`
+- `_podkop_upstream/` — исходники кастомного Podkop
+- `podkop-fork/` — установщик и инструкция
+- `lists/` — агрегированные списки
+- `services/` — отдельные сервисы
+- `selector/` — генератор ключа выбора списков
+- `wiki/` — документация
 
 ## Благодарность
 
-Отдельная благодарность автору Podkop:
+Спасибо автору Podkop:
 
 - https://github.com/itdoginfo/podkop
