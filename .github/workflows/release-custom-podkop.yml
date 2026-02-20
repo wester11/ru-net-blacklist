@@ -18,7 +18,8 @@ jobs:
       - uses: actions/checkout@v4
       - id: ver
         run: |
-          VERSION="${GITHUB_REF_NAME#podkop-v}"
+          RAW_VERSION="${GITHUB_REF_NAME#podkop-v}"
+          VERSION="$(echo "$RAW_VERSION" | sed -E 's/[^0-9A-Za-z.+~]/./g')"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
   build:
